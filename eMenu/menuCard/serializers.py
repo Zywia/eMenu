@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import User, Card
+from .models import User, Card, Meal
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -27,8 +27,29 @@ class UserSerializer(serializers.ModelSerializer):
         return instance
 
 
-class CardSerializer(serializers.ModelSerializer):
+class UserLogInSerializer(serializers.ModelSerializer):
+    password = serializers.CharField()
+    username = serializers.CharField()
 
     class Meta:
+        model = User
+        fields = ('username', 'password')
+
+
+class CardSerializerDetail(serializers.ModelSerializer):
+    class Meta:
         model = Card
+        depth = 1
+        fields = "__all__"
+
+
+class CardSerializerList(serializers.ModelSerializer):
+    class Meta:
+        model = Card
+        fields = "__all__"
+
+
+class MealSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Meal
         fields = "__all__"
