@@ -21,7 +21,7 @@ app.conf.beat_schedule = {
     # Executes every Monday morning at 7:30 a.m.
     'test': {
         'task': 'menuCard.tasks.send_email_rapport',
-        'schedule': crontab(hour='*', minute='*', day_of_week='*'),
+        'schedule': crontab(hour=10, minute=0, day_of_week='*'),
         'args': [],
     },
 }
