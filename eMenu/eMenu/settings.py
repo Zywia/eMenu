@@ -26,8 +26,20 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['0.0.0.0']
 AUTH_USER_MODEL = 'menuCard.User'
-
+CELERY_BROKER_URL = 'amqp://guest:guest@rabbit:5672/%2F'
+CELERY_TIMEZONE = "Europe/Warsaw"
 # Application definition
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = '0.0.0.0'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = False
+
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -39,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_spectacular',
     'django_filters',
+    'django_celery_beat',
     'menuCard'
 ]
 
@@ -110,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Warsaw'
 
 USE_I18N = True
 

@@ -6,3 +6,7 @@ django-cors-headers
 django-filter
 django-crispy-forms
 Faker
+django-concurrency
+django-celery-beat
+celery
+coverage

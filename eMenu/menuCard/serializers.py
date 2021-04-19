@@ -43,13 +43,34 @@ class CardSerializerDetail(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class CardSerializerList(serializers.ModelSerializer):
+class CardSerializerMutate(serializers.ModelSerializer):
+    meal = serializers.PrimaryKeyRelatedField(many=True, write_only=True, queryset=Meal.objects.all())
+
     class Meta:
         model = Card
         fields = "__all__"
+
+
+class CardSerializerList(serializers.ModelSerializer):
+    meal = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='title'
+    )
+
+    class Meta:
+        model = Card
+        fields = ["id", "title", "description", "meal"]
 
 
 class MealSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meal
         fields = "__all__"
+
+
+class MealSerializerCreate(serializers.ModelSerializer):
+
+    class Meta:
+        model = Meal
+        fields = ["id", "title", "description", "price", "time_to_prepare"]
