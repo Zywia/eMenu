@@ -1,4 +1,4 @@
-# Installation
+## Installation
 
 ### first steps
 1. docker-compose build
@@ -19,10 +19,18 @@
 4. celery -A eMenu worker -B
 
 
-# To run tests and check coverage
+## To run tests and check coverage
 1. open terminal in project directory
 2. docker-compose exec web bash
 3. cd eMenu
 4. python manage.py menuCard.tests
 5. coverage run --source='.' manage.py test menuCard.tests
 6. coverage report
+
+
+## Swagger path
+http://0.0.0.0:8000/api/schema/swagger-ui/
+
+## superuser credentials:
+- username: admin
+- password: admin

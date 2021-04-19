@@ -60,7 +60,7 @@ class CardSerializerList(serializers.ModelSerializer):
 
     class Meta:
         model = Card
-        fields = ["id", "title", "description", "meal"]
+        fields = ["id", "title", "description", "meal", "create_date", "last_update"]
 
 
 class MealSerializer(serializers.ModelSerializer):

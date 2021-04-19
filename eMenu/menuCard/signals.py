@@ -15,4 +15,4 @@ def meal_callback(sender, instance, raw, using, update_fields, **kwargs):
 
 @receiver(pre_save, sender=Card)
 def card_callback(sender, instance, raw, using, update_fields, **kwargs):
-    instance.last_update = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE))
+    instance.last_update = datetime.date.today()

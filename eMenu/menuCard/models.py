@@ -21,8 +21,8 @@ class Meal(models.Model):
 class Card(models.Model):
     title = models.CharField(max_length=20, unique=True)
     description = models.TextField()
-    create_date = models.DateTimeField(auto_now_add=True)
-    last_update = models.DateTimeField(auto_now_add=True)
+    create_date = models.DateField(auto_now_add=True)
+    last_update = models.DateField(auto_now_add=True)
     meal = models.ManyToManyField(Meal)
     version = IntegerVersionField()
 

@@ -41,6 +41,8 @@ def populate_cards_with_meals(param):
         description = fake.catch_phrase()
         card = Card.objects.create(title=title[:20], description=description)
         card.meal.set(meals[x])
+        create_date = fake.date()
+        card.create_date = create_date
         card.save()
 
 

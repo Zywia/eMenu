@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login
 from django.db.models import Count
 from django_filters.rest_framework import DjangoFilterBackend
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 from rest_framework import status, viewsets
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
@@ -70,16 +70,27 @@ class CardViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         return super().create(request, *args, **kwargs)
 
+    @extend_schema(
+        parameters=[OpenApiParameter(name='order_by',
+                                     description='order by title or number of meals',
+                                     location=OpenApiParameter.QUERY,
+                                     required=False, type=str,
+                                     examples=[
+                                         OpenApiExample(
+                                             'Example 1',
+                                             summary='order by title',
+                                             value='title'
+                                         ),
+                                         OpenApiExample(
+                                             'Example 2',
+                                             summary='order by number of meals',
+                                             value='meals_counts'
+                                         )
+                                     ])
+                    ]
+    )
     def list(self, request, *args, **kwargs):
-
-        ordering = request.query_params.get('order_by', 'title')
-        if ordering in ['title', 'meals_counts']:
-            queryset = self.get_queryset().order_by(ordering)
-        else:
-            queryset = self.get_queryset()
-
-        serializer = self.get_serializer_class()(queryset, many=True)
-        return Response(serializer.data)
+        return super().list(request, *args, **kwargs)
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -90,9 +101,15 @@ class CardViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
-            return Card.objects.annotate(meals_counts=Count('meal'))
+            queryset = Card.objects.annotate(meals_counts=Count('meal'))
         else:
-            return Card.objects.annotate(meals_counts=Count('meal')).filter(meals_counts__gt=0)
+            queryset = Card.objects.annotate(meals_counts=Count('meal')).filter(meals_counts__gt=0)
+
+        ordering = self.request.query_params.get('order_by', 'title')
+        if ordering in ['title', 'meals_counts']:
+            queryset = queryset.order_by(ordering)
+
+        return queryset
 
 
 class MealViewSet(viewsets.ModelViewSet):
